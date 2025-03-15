@@ -71,9 +71,9 @@ def scraper(url):
     print ("todaycount:",todaycount)		
     print ("="*100) 
 
-    #driver.delete_all_cookies()
+    driver.delete_all_cookies()
     time.sleep(2)
-    #driver.quit()
+    driver.quit()
 
 
 inputurl= "https://queenienie.pixnet.net/blog/post/222278428"
