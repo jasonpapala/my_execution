@@ -92,5 +92,5 @@ while True:
         pass
     print (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     time.sleep(60)
-    if mycount==3:
+    if mycount==4:
         break 
