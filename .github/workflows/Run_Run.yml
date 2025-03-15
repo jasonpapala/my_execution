@@ -30,4 +30,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Python script (Run Run)
-        run: python fix_link.py
+        #run: python fix_link.py
+        run: list_random.py
+
