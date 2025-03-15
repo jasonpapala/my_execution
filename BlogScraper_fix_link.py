@@ -69,20 +69,15 @@ def scraper(url):
     print ("部落格本日人氣:",todaycount)
     print ("="*100) 
 
-    driver.delete_all_cookies()
+    #driver.delete_all_cookies()
     time.sleep(2)
-    driver.quit()
+    #driver.quit()
 
 
-#inputurl= input("Please enter the link: ")
 inputurl= "https://queenienie.pixnet.net/blog/post/222278428"
-if inputurl == "":
-    inputurl= "https://queenienie.pixnet.net/blog/post/222278428"
-elif "%" in inputurl:
-    inputurl=inputurl.split("-")[0].strip()
     
 mycount=0
-time1=datetime.datetime.now().strftime("%Y-%m-%d")
+
 while True:
     print ("-- Starting --")  
     try:
