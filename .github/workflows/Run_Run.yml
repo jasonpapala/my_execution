@@ -31,5 +31,5 @@ jobs:
 
       - name: Run Python script (Run Run)
         #run: python fix_link.py
-        run: list_random.py
+        run: python list_random.py
 
