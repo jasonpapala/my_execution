@@ -96,7 +96,7 @@ while True:
         print ("-"*50)
         pass
     print (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    time.sleep(1000)
+    time.sleep(60)
     if mycount%5==0:
         os.system("cls")   
     time2=datetime.datetime.now().strftime("%Y-%m-%d")
