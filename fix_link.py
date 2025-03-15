@@ -58,15 +58,17 @@ def scraper(url):
 	'''
     #取得本日人氣
     todaycount = soup.find("span",{"id":"blog_hit_daily"}).text
-    print ("AA"+todaycount)
+    #print ("AA"+todaycount)
 
 
     print ("="*100)
     print (mytitle)
     print ("{}/{}/{}".format(dateYear.strip(),dateMonth.strip(),dateDate.strip()))
-    print ("文章人氣:",count)
+    #print ("文章人氣:",count)
+    print ("count:",count)
     print ("="*20)
-    print ("部落格本日人氣:",todaycount)
+    #print ("部落格本日人氣:",todaycount)
+    print ("todaycount:",todaycount)		
     print ("="*100) 
 
     #driver.delete_all_cookies()
@@ -83,7 +85,7 @@ while True:
     try:
         scraper(inputurl)
         mycount+=1
-        print ("流覽次數: "+str(mycount))
+        print ("mycount: "+str(mycount))
     except Exception as e:
         print ("-"*50)
         print ("Exception occurred, error message as following:")
