@@ -17,4 +17,4 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4
       - name: Run script
-        run: python crawler.py
+        run: python BlogScraper_fix_link.py
