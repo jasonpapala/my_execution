@@ -97,9 +97,5 @@ while True:
         pass
     print (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     time.sleep(60)
-    if mycount%5==0:
-        os.system("cls")   
-    time2=datetime.datetime.now().strftime("%Y-%m-%d")
-    if time2!=time1:
-        mycount=0
-        time1=time2    
+    if mycount==3:
+        break 
