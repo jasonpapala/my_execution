@@ -5,7 +5,7 @@ on:
     - cron: "*/5 * * * *"  # 每 5 分鐘運行一次
 
 jobs:
-  run-crawler:
+  run-run:
     runs-on: ubuntu-latest
 
     steps:
