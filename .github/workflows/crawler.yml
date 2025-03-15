@@ -15,6 +15,6 @@ jobs:
         with:
           python-version: "3.9"
       - name: Install dependencies
-        run: pip install requests beautifulsoup4
+        run: pip install requests beautifulsoup4 selenium webdriver-manager
       - name: Run script
         run: python BlogScraper_fix_link.py
