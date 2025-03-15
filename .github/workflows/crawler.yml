@@ -30,4 +30,4 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Python script (crawler)
-        run: python BlogScraper_fix_link.py
+        run: python fix_link.py
