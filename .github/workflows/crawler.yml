@@ -2,19 +2,32 @@ name: Run Crawler
 
 on:
   schedule:
-    - cron: "*/5 * * * *"  # 每 5 分鐘執行一次
+    - cron: "*/5 * * * *"  # 每 5 分鐘運行一次
 
 jobs:
   run-crawler:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
+
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 selenium webdriver-manager
-      - name: Run script
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Python script (crawler)
         run: python BlogScraper_fix_link.py
