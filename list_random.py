@@ -29,8 +29,6 @@ def getlink():
     chrome_options.add_argument("--log-level=3")
     #chrome_options.add_argument("--disable-dev-shm-usage")  # 使用更大的共享內存空間
     #chrome_options.add_argument("--disable-popup-blocking")#停用彈出視窗阻止，瀏覽器通常會阻止視窗彈出，此設定可以停用瀏覽器的彈出視窗阻止功能，允許彈出視窗的顯示。
-    #chrome_options.add_argument("--user-agent=Mozilla/5.0 (Linux; Android 12; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36")#設定瀏覽器的使用者代理字串
-    #service = Service("F:\JASON資料\Python\MyCode\BlogScraper\scraper_portable\chromedriver.exe")
     #driver = webdriver.Chrome(service=service,options=chrome_options)
     driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://queenienie.pixnet.net/blog?m=off")
@@ -125,6 +123,6 @@ while True:
         print ("="*40)
         pass
     print (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    time.sleep(60)
-    if mycount==4:
+    time.sleep(30)
+    if mycount==10:
         break 
