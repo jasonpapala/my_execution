@@ -25,9 +25,6 @@ def scraper(url):
     #chrome_options.add_argument("--disable-dev-shm-usage")  # 使用更大的共享內存空間
     #chrome_options.binary_location = "C:\Program Files\Google\Chrome\Application\chrome.exe"  # 修改為你的 Chrome 路徑
 
-    #chrome_options.add_argument("--window-size=1,1")#設定瀏覽器視窗大小
-    #driver = webdriver.Chrome(executable_path="F:\JASON資料\Python\MyCode\BlogScraper\scraper_portable\chromedriver.exe",chrome_options=chrome_options)
-
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
 
