@@ -22,8 +22,6 @@ def getlink():
     chrome_options.add_argument('--ignore-certificate-errors')#忽略 SSL 憑證錯誤
     chrome_options.add_argument('--incognito')#開啟無痕模式
     chrome_options.add_argument('--disable-plugins')
-    #chrome_options.add_argument("--window-size=1,1")#設定瀏覽器視窗大小
-    #chrome_options.add_argument('--remote-debugging-port=61625')
     #chrome_options.add_argument("--disable-notifications")#停用瀏覽器通知。在某些網站上，瀏覽器可能會彈出通知框，詢問使用者是否允許網站發送通知。 透過設定該參數，可以停用這些通知框的顯示，從而防止它們打斷自動化腳本的執行。
     chrome_options.add_argument('--disable-infobars')#停用 Chrome 通知欄
     chrome_options.add_argument("--log-level=3")
@@ -65,7 +63,7 @@ def scraper(url):
     chrome_options.add_argument('--disable-infobars')
     chrome_options.add_argument("--log-level=3")
     #chrome_options.add_argument("--window-size=1,1")#設定瀏覽器視窗大小
-    #driver = webdriver.Chrome(executable_path="D:/JASON資料/Python/MyCode/chromedriver.exe",chrome_options=chrome_options)
+
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
 
