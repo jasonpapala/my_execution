@@ -121,6 +121,6 @@ while True:
         print ("="*40)
         pass
     print (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    time.sleep(30)
+    time.sleep(40)
     if mycount==8:
         break 
