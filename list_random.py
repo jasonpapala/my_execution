@@ -284,8 +284,8 @@ def main():
                 logging.exception("Exception occurred while scraping")
 
             logging.info(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-            time.sleep(50)
-            if mycount == 8:
+            time.sleep(45)
+            if mycount == 10:
                 break
 
 
