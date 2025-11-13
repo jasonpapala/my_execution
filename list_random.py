@@ -119,7 +119,7 @@ class Browser:
     Provides .get(url) and .page_source and ensures quit() on exit.
     """
 
-    def __init__(self, headless: bool = True, max_retries: int = 2):
+    def __init__(self, headless: bool = True, max_retries: int = 3):
         self.headless = headless
         self.driver: Optional[webdriver.Chrome] = None
         self.max_retries = max_retries
@@ -127,8 +127,17 @@ class Browser:
     def _make_options(self):
         opts = webdriver.ChromeOptions()
         if self.headless:
-            opts.add_argument('--headless')
+            # Use a headless mode that works well in CI; fall back to plain headless
+            try:
+                opts.add_argument('--headless=new')
+            except Exception:
+                opts.add_argument('--headless')
         opts.add_argument('--disable-gpu')
+        # CI-friendly flags
+        opts.add_argument('--no-sandbox')
+        opts.add_argument('--disable-dev-shm-usage')
+        opts.add_argument('--single-process')
+        opts.add_argument('--window-size=1920,1080')
         opts.add_argument("--silent")
         opts.add_argument('--ignore-certificate-errors')
         opts.add_argument('--incognito')
@@ -143,7 +152,19 @@ class Browser:
         return self
 
     def _make_driver(self):
-        return webdriver.Chrome(options=self._make_options())
+        # Create the Chrome webdriver and set reasonable timeouts for CI
+        driver = webdriver.Chrome(options=self._make_options())
+        try:
+            # Wait up to 180s for page loads (increase if you load very large pages)
+            driver.set_page_load_timeout(180)
+            # Script timeout for async scripts
+            driver.set_script_timeout(60)
+            # Implicit wait for element lookups (keeps find_element polite)
+            driver.implicitly_wait(5)
+        except Exception:
+            # Some driver versions may not support these calls; ignore if they fail
+            logging.exception('Browser: warning setting timeouts on driver')
+        return driver
 
     def _ensure_driver(self):
         if self.driver is None:
@@ -166,15 +187,21 @@ class Browser:
                 self._ensure_driver()
                 if not self.driver:
                     raise RuntimeError('No webdriver available')
+                logging.info('Browser: attempting get (attempt %s) %s', attempt, url)
                 self.driver.get(url)
                 return True
             except Exception as exc:
                 last_exc = exc
+                # Log with traceback to capture underlying urllib3/socket timeout
                 logging.exception('Browser: get failed on attempt %s', attempt)
+                # Exponential backoff before restart to give system some breathing room
+                backoff = 1 + attempt * 2
+                time.sleep(backoff)
                 try:
                     self.restart()
                 except Exception:
                     logging.exception('Browser: restart failed')
+                # after restart, small pause
                 time.sleep(1)
         # after retries
         if last_exc is None:
