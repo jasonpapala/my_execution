@@ -29,28 +29,7 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Install Chromium and Chromedriver (CI friendly)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser chromium-chromedriver
-        env:
-          DEBIAN_FRONTEND: noninteractive
-
-      - name: Run Python script (with retries)
-        # Run the script and retry a few times on transient failures (e.g., Selenium timeouts)
-        run: |
-          max_attempts=3
-          attempt=0
-          until [ "$attempt" -ge "$max_attempts" ]
-          do
-            attempt=$((attempt+1))
-            echo "Run attempt $attempt/$max_attempts"
-            python list_random.py && break
-            echo "Attempt $attempt failed. Sleeping before retry..."
-            sleep $((attempt * 10))
-          done
-          if [ "$attempt" -ge "$max_attempts" ]; then
-            echo "All attempts failed"
-            exit 1
-          fi
+      - name: Run Python script (Run Run)
+        #run: python fix_link.py
+        run: python list_random.py
 
