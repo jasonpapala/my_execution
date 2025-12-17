@@ -90,9 +90,25 @@ def _scraper_with_browser(url, browser):
     dateDate = dd.get_text(strip=True) if dd else "Unknown"
 
     # 取得文章人氣
-    myid = url.split("/")[-1].strip().split("?")[0].strip()
-    cnt_span = soup.find("span", {"id": f"BlogArticleCount-{myid}"})
-    count = cnt_span.get_text(strip=True) if cnt_span else "0"
+    # 找到所有以 BlogArticleCount- 開頭的 span
+    spans = soup.find_all("span", id=re.compile(r"^BlogArticleCount-"))
+
+    # 如果想要第一個（預設）
+    chosen = spans[0] if spans else None
+
+    # 或者指定要第 n 個（n 從 0 開始）
+    # idx = 0  # 改成想要的 index
+    # chosen = spans[idx] if len(spans) > idx else None
+
+    if chosen and chosen.get_text(strip=True):
+        raw = chosen.get_text(strip=True)         # e.g. "2,001" 或 "48"
+        normalized = raw.replace(",", "")         # 移除千位分隔符
+        count = int(normalized) if normalized.isdigit() else None
+    else:
+        count = None  # 或 0，視你需求
+    # 結果範例
+    print("Found span id:", chosen.get('id') if chosen else None)
+    print("Count (int):", count)
 
     # 取得本日人氣
     today_span = soup.find("span", {"id": "blog_hit_daily"})
@@ -187,13 +203,13 @@ class Browser:
                 self._ensure_driver()
                 if not self.driver:
                     raise RuntimeError('No webdriver available')
-                logging.info('Browser: attempting get (attempt %s) %s', attempt, url)
+                #logging.info('Browser: attempting get (attempt %s) %s', attempt, url)
                 self.driver.get(url)
                 return True
             except Exception as exc:
                 last_exc = exc
                 # Log with traceback to capture underlying urllib3/socket timeout
-                logging.exception('Browser: get failed on attempt %s', attempt)
+                #logging.exception('Browser: get failed on attempt %s', attempt)
                 # Exponential backoff before restart to give system some breathing room
                 backoff = 1 + attempt * 2
                 time.sleep(backoff)
