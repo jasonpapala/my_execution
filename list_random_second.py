@@ -265,7 +265,7 @@ if __name__ == "__main__":
         #print('Result:', result)
         print ("Selected article:", url)
         print ("文章標題: ", result.get('title'))
-        print ("今日人氣: ", result['today'])
+        print ("BLOG今日人氣: ", result['today'])
         print ("文章今日人氣: ", result['popularity'])
         #print ("Popularity ID: ", result['popularity_id'])
         print ("Bracketed popularity: ", result['bracket'])
@@ -294,7 +294,7 @@ if __name__ == "__main__":
                 res = scrape_post(picked, timeout=20)
                 print(f'[{i}] Selected article: {picked}')
                 print(f'[{i}] Title: {res.get("title")}')
-                print(f'[{i}] 文章總人氣: {res.get("today")}')
+                print(f'[{i}] BLOG今日人氣: {res.get("today")}')
                 print(f'[{i}] 文章今日人氣: {res.get("popularity")}')
                 print(f'[{i}] Bracketed popularity: {res.get("bracket")}')
                 success += 1
