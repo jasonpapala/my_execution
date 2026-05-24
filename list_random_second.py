@@ -285,6 +285,9 @@ if __name__ == "__main__":
     # If a URL was provided on the command line, just scrape that once.
     if len(sys.argv) > 1 and not sys.argv[1].startswith('--'):
         logging.info('Scraping chosen URL: %s', url)
+        if not url:
+            logging.error('No URL to scrape; exiting.')
+            sys.exit(0)
         result = scrape_post(url, timeout=20)
         print ("Selected article:", url)
         print ("文章標題: ", result.get('title'))
