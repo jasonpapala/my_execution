@@ -48,6 +48,7 @@ def _getlink_with_browser(browser):
         href = a.get('href')
         if not href:
             continue
+        href = str(href)
         simplizelink = href.split('-')[0].strip()
         articlenumber = simplizelink.split("/")[-1].strip().split("?")[0].strip()
 
