@@ -1,9 +1,11 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 import datetime
 import re
@@ -31,13 +33,15 @@ def scrape_post(url: str, timeout: int = 20, initial_wait: int = 8):
     logging.info('Scraping %s (initial_wait=%ds)', url, initial_wait)
 
     opts = webdriver.ChromeOptions()
-    opts.add_argument('--headless')
+    opts.add_argument('--headless=new')
     opts.add_argument('--disable-gpu')
     opts.add_argument('--no-sandbox')
+    opts.add_argument('--disable-dev-shm-usage')
     opts.add_argument('--ignore-certificate-errors')
     opts.add_argument('--incognito')
+    opts.add_argument('--window-size=1920,1080')
 
-    driver = webdriver.Chrome(options=opts)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
 
     try:
         try:
@@ -225,13 +229,15 @@ def pick_random_article(blog_url: str, timeout: int = 10):
     """Visit the blog index and pick a random article URL. Returns full URL or None."""
     logging.info('Selecting a random article from %s', blog_url)
     opts = webdriver.ChromeOptions()
-    opts.add_argument('--headless')
+    opts.add_argument('--headless=new')
     opts.add_argument('--disable-gpu')
     opts.add_argument('--no-sandbox')
+    opts.add_argument('--disable-dev-shm-usage')
     opts.add_argument('--ignore-certificate-errors')
     opts.add_argument('--incognito')
+    opts.add_argument('--window-size=1920,1080')
 
-    driver = webdriver.Chrome(options=opts)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
     try:
         try:
             driver.get(blog_url)
