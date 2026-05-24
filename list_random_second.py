@@ -40,7 +40,17 @@ def scrape_post(url: str, timeout: int = 20, initial_wait: int = 8):
     driver = webdriver.Chrome(options=opts)
 
     try:
-        driver.get(url)
+        try:
+            driver.get(url)
+        except Exception as exc:
+            logging.warning('Failed to load %s: %s', url, exc)
+            return {
+                'today': None,
+                'popularity': None,
+                'popularity_id': None,
+                'bracket': None,
+                'title': None,
+            }
 
         # Give dynamic JS a short moment to populate counters (useful when initial values are 0)
         if initial_wait and initial_wait > 0:
@@ -48,9 +58,10 @@ def scrape_post(url: str, timeout: int = 20, initial_wait: int = 8):
             time.sleep(initial_wait)
 
         wait = WebDriverWait(driver, timeout)
-        # wait until one of: BlogArticleCount- span exists, or blog_hit_daily exists, or some text containing '人氣' appears
+        # wait until one of: BlogArticleCount span exists, or blog_hit_daily exists, or some text containing '人氣' appears
+        count_selectors = 'span[id^="BlogArticleCount-"], span#BlogArticleCount'
         try:
-            wait.until(lambda d: any((e.get_attribute('textContent') or '').strip() for e in d.find_elements(By.CSS_SELECTOR, 'span[id^="BlogArticleCount-"]'))
+            wait.until(lambda d: any((e.get_attribute('textContent') or '').strip() for e in d.find_elements(By.CSS_SELECTOR, count_selectors))
                        or any((e.get_attribute('textContent') or '').strip() for e in d.find_elements(By.ID, 'blog_hit_daily'))
                        or d.find_elements(By.XPATH, '//*[contains(text(), "人氣")]'))
         except Exception:
@@ -58,8 +69,8 @@ def scrape_post(url: str, timeout: int = 20, initial_wait: int = 8):
 
         time.sleep(0.1)
 
-        # Prefer the first span with id starting with BlogArticleCount-
-        bcounts = driver.find_elements(By.CSS_SELECTOR, 'span[id^="BlogArticleCount-"]')
+        # Prefer the first span with id starting with BlogArticleCount- or BlogArticleCount
+        bcounts = driver.find_elements(By.CSS_SELECTOR, count_selectors)
         popularity = None
         popularity_id = None
         if bcounts:
@@ -68,7 +79,7 @@ def scrape_post(url: str, timeout: int = 20, initial_wait: int = 8):
             popularity = None
             end = time.time() + timeout
             while time.time() < end:
-                els = driver.find_elements(By.CSS_SELECTOR, 'span[id^="BlogArticleCount-"]')
+                els = driver.find_elements(By.CSS_SELECTOR, count_selectors)
                 if not els:
                     time.sleep(0.3)
                     continue
@@ -194,7 +205,15 @@ def scrape_post(url: str, timeout: int = 20, initial_wait: int = 8):
             'bracket': bracket_val,
             'title': title,
         }
-
+    except Exception as exc:
+        logging.warning('Error scraping %s: %s', url, exc)
+        return {
+            'today': None,
+            'popularity': None,
+            'popularity_id': None,
+            'bracket': None,
+            'title': None,
+        }
     finally:
         try:
             driver.quit()
@@ -214,7 +233,12 @@ def pick_random_article(blog_url: str, timeout: int = 10):
 
     driver = webdriver.Chrome(options=opts)
     try:
-        driver.get(blog_url)
+        try:
+            driver.get(blog_url)
+        except Exception as exc:
+            logging.warning('Failed to load blog index %s: %s', blog_url, exc)
+            return None
+
         wait = WebDriverWait(driver, timeout)
         try:
             wait.until(lambda d: d.find_elements(By.CSS_SELECTOR, 'a[href*="/blog/posts/"], a[href*="/blog/post/"]'))
@@ -262,13 +286,12 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and not sys.argv[1].startswith('--'):
         logging.info('Scraping chosen URL: %s', url)
         result = scrape_post(url, timeout=20)
-        #print('Result:', result)
         print ("Selected article:", url)
         print ("文章標題: ", result.get('title'))
         print ("BLOG今日人氣: ", result['today'])
         print ("文章今日人氣: ", result['popularity'])
-        #print ("Popularity ID: ", result['popularity_id'])
-        print ("Bracketed popularity: ", result['bracket'])
+        if result.get('bracket') is not None:
+            print ("Bracketed popularity: ", result['bracket'])
     else:
         # No explicit URL provided -> run 10 iterations: pick random article each time
         iterations = 10
@@ -296,10 +319,11 @@ if __name__ == "__main__":
                 print(f'[{i}] Title: {res.get("title")}')
                 print(f'[{i}] BLOG今日人氣: {res.get("today")}')
                 print(f'[{i}] 文章今日人氣: {res.get("popularity")}')
-                print(f'[{i}] Bracketed popularity: {res.get("bracket")}')
+                if res.get('bracket') is not None:
+                    print(f'[{i}] Bracketed popularity: {res.get("bracket")}')
                 success += 1
-            except Exception:
-                logging.exception('Error scraping article on iteration %d', i)
+            except Exception as exc:
+                logging.warning('Error scraping article on iteration %d: %s', i, exc)
 
             if i < iterations:
                 logging.info('Sleeping %d seconds before next iteration', interval_seconds)
