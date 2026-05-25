@@ -44,9 +44,9 @@ def scrape_post(url: str, timeout: int = 20, initial_wait: int = 8):
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
     
-    # Set longer timeouts for CI environments
-    driver.set_page_load_timeout(180)
-    driver.set_script_timeout(180)
+    # Set timeouts for CI environments (shorter than iteration interval)
+    driver.set_page_load_timeout(25)
+    driver.set_script_timeout(25)
     driver.implicitly_wait(10)
 
     try:
@@ -246,9 +246,9 @@ def pick_random_article(blog_url: str, timeout: int = 10):
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
     
-    # Set longer timeouts for CI environments
-    driver.set_page_load_timeout(180)
-    driver.set_script_timeout(180)
+    # Set timeouts for CI environments (shorter than iteration interval)
+    driver.set_page_load_timeout(25)
+    driver.set_script_timeout(25)
     driver.implicitly_wait(10)
     
     try:
@@ -317,7 +317,7 @@ if __name__ == "__main__":
     else:
         # No explicit URL provided -> run 10 iterations: pick random article each time
         iterations = 10
-        interval_seconds = 40
+        interval_seconds = 30
         logging.info('Starting %d iterations, interval %ds', iterations, interval_seconds)
         success = 0
         for i in range(1, iterations + 1):
