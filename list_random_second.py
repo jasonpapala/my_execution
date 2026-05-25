@@ -40,8 +40,14 @@ def scrape_post(url: str, timeout: int = 20, initial_wait: int = 8):
     opts.add_argument('--ignore-certificate-errors')
     opts.add_argument('--incognito')
     opts.add_argument('--window-size=1920,1080')
+    opts.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36')
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
+    
+    # Set longer timeouts for CI environments
+    driver.set_page_load_timeout(180)
+    driver.set_script_timeout(180)
+    driver.implicitly_wait(10)
 
     try:
         try:
@@ -236,8 +242,15 @@ def pick_random_article(blog_url: str, timeout: int = 10):
     opts.add_argument('--ignore-certificate-errors')
     opts.add_argument('--incognito')
     opts.add_argument('--window-size=1920,1080')
+    opts.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36')
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
+    
+    # Set longer timeouts for CI environments
+    driver.set_page_load_timeout(180)
+    driver.set_script_timeout(180)
+    driver.implicitly_wait(10)
+    
     try:
         try:
             driver.get(blog_url)
