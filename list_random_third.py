@@ -44,8 +44,8 @@ def scrape_post(url: str, timeout: int = 20, initial_wait: int = 8):
     driver = webdriver.Chrome(options=opts)
     
     # Set timeouts for CI environments (shorter than iteration interval)
-    driver.set_page_load_timeout(25)
-    driver.set_script_timeout(25)
+    driver.set_page_load_timeout(60)
+    driver.set_script_timeout(60)
     driver.implicitly_wait(10)
 
     try:
@@ -247,8 +247,8 @@ def pick_random_article(blog_url: str, timeout: int = 10):
     driver = webdriver.Chrome(options=opts)
     
     # Set timeouts for CI environments (shorter than iteration interval)
-    driver.set_page_load_timeout(25)
-    driver.set_script_timeout(25)
+    driver.set_page_load_timeout(60)
+    driver.set_script_timeout(60)
     driver.implicitly_wait(10)
     try:
         try:
@@ -321,17 +321,10 @@ if __name__ == "__main__":
         success = 0
         for i in range(1, iterations + 1):
             logging.info('Iteration %d/%d', i, iterations)
-            # Try to pick an article with up to 2 retries
-            picked = None
-            retries = 2
-            for attempt in range(retries + 1):
-                picked = pick_random_article('https://queenienie.pixnet.net/blog', timeout=15)
-                if picked:
-                    break
-                logging.warning('Pick attempt %d failed; retrying...', attempt + 1)
-                time.sleep(1)
+                # Try to pick an article once (no retries)
+                picked = pick_random_article('https://queenienie.pixnet.net/blog', timeout=30)
             if not picked:
-                logging.warning('No article picked after %d attempts; skipping iteration %d', retries + 1, i)
+                    logging.warning('No article picked; skipping iteration %d', i)
                 continue
 
             try:
