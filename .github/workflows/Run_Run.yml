@@ -7,8 +7,8 @@ on:
 jobs:
   run-run:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    #env:
+    #  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
@@ -35,4 +35,5 @@ jobs:
         #run: python fix_link.py
         #run: python list_random.py
         run: python list_random_second.py
+        #run: python list_random_third.py
 
