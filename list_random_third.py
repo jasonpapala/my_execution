@@ -293,9 +293,11 @@ def pick_random_article(blog_url: str, timeout: int = 10):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
     if len(sys.argv) > 1:
-        url = sys.argv[1]
+        #url = sys.argv[1]
+        url = 'https://queenienie.pixnet.net/blog/posts/14222990361'
     else:
-        url = pick_random_article('https://queenienie.pixnet.net/blog', timeout=15)
+        #url = pick_random_article('https://queenienie.pixnet.net/blog', timeout=15)
+        url = 'https://queenienie.pixnet.net/blog/posts/14222990361'
         if not url:
             logging.info('Falling back to default article URL')
             url = 'https://queenienie.pixnet.net/blog/posts/14222990361'
