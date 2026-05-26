@@ -298,7 +298,7 @@ if __name__ == "__main__":
         url = pick_random_article('https://queenienie.pixnet.net/blog', timeout=15)
         if not url:
             logging.info('Falling back to default article URL')
-            #url = 'https://queenienie.pixnet.net/blog/posts/14222990361'
+            url = 'https://queenienie.pixnet.net/blog/posts/14222990361'
 
     # If a URL was provided on the command line, just scrape that once.
     if len(sys.argv) > 1 and not sys.argv[1].startswith('--'):
