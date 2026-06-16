@@ -34,5 +34,5 @@ jobs:
         #run: python list_random.py
         #run: python list_random_second.py
         #run: python list_random_third.py
-        run: python BlogScraper_random_List.py
+        run: python BlogScraper_random_twice.py
 
