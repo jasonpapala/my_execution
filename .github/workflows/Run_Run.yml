@@ -2,7 +2,7 @@ name: Run Run
 
 on:
   schedule:
-    - cron: "*/10 * * * *"  # 每 10 分鐘運行一次
+    - cron: "*/60 * * * *"  # 每 60 分鐘運行一次
 
 jobs:
   run-run:
@@ -34,5 +34,5 @@ jobs:
         #run: python list_random.py
         #run: python list_random_second.py
         #run: python list_random_third.py
-        run: python BlogScraper_random_twice.py
+        run: python BlogScraper_random_ten.py
 

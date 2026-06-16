@@ -373,4 +373,4 @@ if __name__ == "__main__":
     else:
         print(selected_link)
         #selected_link = "https://queenienie.pixnet.net/blog/posts/14223129105"
-        run_scraper_loop(selected_link, max_runs=2)
+        run_scraper_loop(selected_link, max_runs=10)
