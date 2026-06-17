@@ -2,7 +2,7 @@ name: Run Run
 
 on:
   schedule:
-    - cron: "*/60 * * * *"  # 每 60 分鐘運行一次
+    - cron: "0 * * * *"  # 每 60 分鐘運行一次
 
 jobs:
   run-run:
