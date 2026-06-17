@@ -30,6 +30,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Python script (Run Run)
-        BlogScraper_random_List.py
+        run BlogScraper_random_List.py
         #run: python BlogScraper_random_ten.py
 
