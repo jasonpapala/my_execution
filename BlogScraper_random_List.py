@@ -16,7 +16,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 BLOG_URL = "https://queenienie.pixnet.net/blog?m=off"
 ARTICLE_LIMIT = 12
-ARTICLE_READS_PER_RUN = 2
+ARTICLE_READS_PER_RUN = 10
 SLEEP_BETWEEN_READS = 5
 PAGE_TIMEOUT = 30
 WAIT_TIMEOUT = 8
